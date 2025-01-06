@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>물타기 계산기 - 도트 스타일</title>
+  <style>
+    /* 전역 스타일 */
+    body {
+      font-family: 'Press Start 2P', cursive;
+      margin: 0;
+      padding: 0;
+      background-color: #1a1a1a; /* 어두운 배경 */
+      color: #fff;
+      text-align: center;
+    }
+
+    h1, h3 {
+      color: #ffcc00; /* 밝은 노란색 텍스트 */
+      text-shadow: 1px 1px 0 #333; /* 도트 느낌의 그림자 */
+    }
+
+    input[type="number"] {
+      font-family: 'Press Start 2P', cursive;
+      font-size: 14px;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      width: 80%;
+      box-shadow: inset 1px 1px 0 #555, inset -1px -1px 0 #000; /* 도트형 테두리 */
+    }
+
+    nav {
+      background-color: #333;
+      padding: 10px;
+      display: inline-block;
+      border: 3px solid #ffcc00;
+      margin-top: 10px;
+      box-shadow: 1px 1px 0 #000, -1px -1px 0 #555; /* 도트 스타일 */
+    }
+
+    nav a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-size: 12px;
+      margin: 0 10px;
+      padding: 10px;
+      background-color: #1a1a1a;
+      border: 2px solid #ffcc00;
+      display: inline-block;
+      box-shadow: 1px 1px 0 #000, -1px -1px 0 #555; /* 도트형 그림자 */
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #ffcc00;
+      color: #000;
+    }
+
+    #resultABC, #resultOthers, #resultSummary {
+      background-color: #1a1a1a;
+      border: 3px solid #ffcc00;
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      box-shadow: 2px 2px 0 #000, -2px -2px 0 #555; /* 도트형 그림자 */
+    }
+
+    #resultAverage, #resultFinalValue {
+      color: #00ff00; /* 녹색으로 강조 */
+      font-size: 16px;
+    }
+
+    /* 도트 배경 */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: repeating-linear-gradient(0deg, #222 1px, transparent 1px),
+                        repeating-linear-gradient(90deg, #222 1px, transparent 1px);
+      background-size: 10px 10px; /* 도트 패턴 */
+      opacity: 0.8;
+      z-index: -1;
+    }
+
+    /* 반응형 디자인 */
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 14px;
+      }
+      input[type="number"] {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">첫 번째 페이지</a>
+    <a href="second.html">두 번째 페이지</a>
+  </nav>
+
+  <h1>물타기 계산기</h1>
+
+  <div id="resultABC">
+    <h3>현재 보유</h3>
+    <label>현재 평단가:</label>
+    <input type="number" id="priceA" placeholder="가격 입력"><br>
+    <label>현재 보유량:</label>
+    <input type="number" id="quantityB" placeholder="개수 입력"><br>
+    <p>현재 평단가: <span id="resultA">0</span></p>
+    <p>현재 보유량: <span id="resultB">0</span></p>
+    <p>현재 평가액: <span id="resultC">0</span></p>
+  </div>
+
+  <div id="resultOthers">
+    <h3>신규 매수</h3>
+    <label>매수 가능 금액:</label>
+    <input type="number" id="totalMoneyD" placeholder="금액 입력"><br>
+    <label>매수 단가:</label>
+    <input type="number" id="priceE" placeholder="단가 입력"><br>
+    <p>주문 가능 수량: <span id="resultF">0</span></p>
+    <p>주문 금액: <span id="resultD">0</span></p>
+  </div>
+
+  <div id="resultSummary">
+    <h3>최종 결과</h3>
+    <p>최종 평단가: <span id="resultAverage">0</span></p>
+    <p>최종 평가 금액: <span id="resultFinalValue">0</span></p>
+  </div>
+
+  <script>
+    function updateResults() {
+      const a = Number(document.getElementById('priceA').value);
+      const b = Number(document.getElementById('quantityB').value);
+      const d = Number(document.getElementById('totalMoneyD').value);
+      const e = Number(document.getElementById('priceE').value);
+
+      const c = a * b;
+      const f = Math.floor(d / e);
+
+      const averagePrice = ((a * b) + (e * f)) / (b + f);
+      const finalValue = (a * b) + (e * f);
+
+      document.getElementById('resultA').textContent = `${a || 0}원`;
+      document.getElementById('resultB').textContent = `${b || 0}개`;
+      document.getElementById('resultC').textContent = `${c || 0}원`;
+      document.getElementById('resultD').textContent = `${d || 0}원`;
+      document.getElementById('resultF').textContent = `${f || 0}개`;
+      document.getElementById('resultAverage').textContent = `${averagePrice ? averagePrice.toFixed(2) : 0}원`;
+      document.getElementById('resultFinalValue').textContent = `${finalValue || 0}원`;
+    }
+
+    document.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', updateResults);
+    });
+
+    window.onload = updateResults;
+  </script>
+</body>
+</html>
